@@ -1,0 +1,69 @@
+import java.util.*;
+
+public class DFSGraph {
+    private int vertices;
+    private LinkedList<Integer>[] adjList;
+
+    // Constructor to initialize graph
+    public DFSGraph(int v) {
+        vertices = v;
+        adjList = new LinkedList[v];
+        for (int i = 0; i < v; i++) {
+            adjList[i] = new LinkedList<>();
+        }
+    }
+
+    // Method to add an edge to the graph
+    public void addEdge(int v, int w) {
+        adjList[v].add(w);
+        // If graph is undirected, use this too:
+        // adjList[w].add(v);
+    }
+
+    // DFS traversal starting from a given vertex
+    public void dfs(int startVertex) {
+        boolean[] visited = new boolean[vertices];
+        System.out.print("DFS Traversal: ");
+        dfsRecursive(startVertex, visited);
+        System.out.println();
+    }
+
+    // Helper recursive method for DFS
+    private void dfsRecursive(int vertex, boolean[] visited) {
+        visited[vertex] = true;
+        System.out.print(vertex + " ");
+
+        for (int neighbor : adjList[vertex]) {
+            if (!visited[neighbor]) {
+                dfsRecursive(neighbor, visited);
+            }
+        }
+    }
+
+    // Main method to read input using Scanner
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter number of vertices: ");
+        int v = sc.nextInt();
+
+        System.out.print("Enter number of edges: ");
+        int e = sc.nextInt();
+
+        DFSGraph graph = new DFSGraph(v);
+
+        System.out.println("Enter edges (from to):");
+        for (int i = 0; i < e; i++) {
+            int from = sc.nextInt();
+            int to = sc.nextInt();
+            graph.addEdge(from, to);
+        }
+
+        System.out.print("Enter starting vertex for DFS: ");
+        int start = sc.nextInt();
+
+        graph.dfs(start);
+
+        sc.close();
+    }
+}
